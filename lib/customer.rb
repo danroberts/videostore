@@ -11,10 +11,8 @@ class Customer
   end
 
   def statement
-    frequent_renter_points = 0
     result = "Rental record for #{@name}\n"
     for rental in @rentals
-      frequent_renter_points += calculate_frequent_rental_points(rental)
 
       result += "\t#{rental.movie.title}\t#{calculate_price(rental)}\n"
     end
@@ -22,6 +20,14 @@ class Customer
     result += "Amount owed is $#{total_amount}\n"
     result += "You earned #{frequent_renter_points} frequent renter points"
     result
+  end
+
+  def frequent_renter_points
+    frequent_renter_points = 0
+    for rental in @rentals
+      frequent_renter_points += calculate_frequent_rental_points(rental)
+    end
+    frequent_renter_points
   end
 
   def total_amount
