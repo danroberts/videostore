@@ -14,10 +14,9 @@ class Customer
     frequent_renter_points = 0
     result = "Rental record for #{@name}\n"
     for rental in @rentals
-      this_amount = calculate_price(rental) 
       frequent_renter_points += calculate_frequent_rental_points(rental)
 
-      result += "\t#{rental.movie.title}\t#{this_amount}\n"
+      result += "\t#{rental.movie.title}\t#{calculate_price(rental)}\n"
     end
 
     result += "Amount owed is $#{total_amount}\n"
