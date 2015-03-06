@@ -56,20 +56,12 @@ class Customer
   end
 
   def frequent_renter_points
-    @rentals.reduce(0) { |points, rental| points += calculate_frequent_rental_points(rental) }
+    @rentals.reduce(0) { |points, rental| points += rental.calculate_frequent_rental_points}
   end
 
   def total_amount
     @rentals.reduce(0) { |price, rental| price += rental.calculate_price}
   end
 
-  def calculate_frequent_rental_points(rental)
-    points = 0
-    points += 1
-    if rental.movie.price_code == Movie::NEW_RELEASE && rental.days_rented > 1
-      points += 1
-    end
-    return points
-  end
     
 end

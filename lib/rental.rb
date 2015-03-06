@@ -27,4 +27,13 @@ class Rental
 
     return price
   end
+
+  def calculate_frequent_rental_points
+    points = 0
+    points += 1
+    if @movie.price_code == Movie::NEW_RELEASE && @days_rented > 1
+      points += 1
+    end
+    return points
+  end
 end
