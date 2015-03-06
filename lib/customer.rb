@@ -27,8 +27,6 @@ class Customer
     results
   end
 
-
-
   def statement
     result = statement_title + "\n"
 
@@ -58,19 +56,11 @@ class Customer
   end
 
   def frequent_renter_points
-    frequent_renter_points = 0
-    for rental in @rentals
-      frequent_renter_points += calculate_frequent_rental_points(rental)
-    end
-    frequent_renter_points
+    @rentals.reduce(0) { |points, rental| points += calculate_frequent_rental_points(rental) }
   end
 
   def total_amount
-    total_amount = 0
-    for rental in @rentals
-      total_amount += calculate_price(rental)
-    end
-    total_amount
+    @rentals.reduce(0) { |price, rental| price += calculate_price(rental) }
   end
 
   def calculate_frequent_rental_points(rental)
