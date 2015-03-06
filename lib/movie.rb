@@ -26,11 +26,15 @@ class NewReleaseMovie < Movie
   end
 
   def frequent_rental_points(days_rented)
-    if days_rented > 1
-      return 2
-    else
-      return 1
+    points = 1
+    if should_apply_bonus(days_rented)
+      points += 1
     end
+    return points
+  end
+
+  def should_apply_bonus(days_rented)
+    days_rented > 1
   end
 end
 
@@ -43,3 +47,14 @@ class ChildrensMovie < Movie
     return price
   end
 end
+
+class HorrorMovie < Movie
+  def price(days_rented)
+    days_rented * 1
+  end
+
+  def frequent_rental_points(days_rented)
+    days_rented - 1
+  end
+end
+    
