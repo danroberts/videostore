@@ -5,4 +5,26 @@ class Rental
     @movie = movie
     @days_rented = days_rented
   end
+
+  def calculate_price
+    price = 0
+    case @movie.price_code
+      when Movie::REGULAR
+        price += 2
+        if @days_rented > 2
+          price += (@days_rented - 2) * 1.5
+        end
+      when Movie::NEW_RELEASE
+        price += @days_rented * 3
+      when Movie::CHILDRENS
+        price += 1.5
+        if @days_rented > 3
+          price += (@days_rented - 3) * 1.5
+        end
+      else
+        # do nothing for a while
+    end
+
+    return price
+  end
 end

@@ -16,7 +16,7 @@ class Customer
     result += "<ul>"
 
     for rental in @rentals
-      result += "<li>#{movie_title(rental)}&nbsp;&nbsp;&nbsp;&nbsp;#{calculate_price(rental)}</li>"
+      result += "<li>#{movie_title(rental)}&nbsp;&nbsp;&nbsp;&nbsp;#{rental.calculate_price}</li>"
     end
 
     result += "</ul>"
@@ -31,7 +31,7 @@ class Customer
     result = statement_title + "\n"
 
     for rental in @rentals
-      result += "\t#{movie_title(rental)}\t#{calculate_price(rental)}\n"
+      result += "\t#{movie_title(rental)}\t#{rental.calculate_price}\n"
     end
 
     result += amount_owed_message + "\n"
@@ -60,7 +60,7 @@ class Customer
   end
 
   def total_amount
-    @rentals.reduce(0) { |price, rental| price += calculate_price(rental) }
+    @rentals.reduce(0) { |price, rental| price += rental.calculate_price}
   end
 
   def calculate_frequent_rental_points(rental)
@@ -72,25 +72,4 @@ class Customer
     return points
   end
     
-  def calculate_price(rental)
-    price = 0
-    case rental.movie.price_code
-      when Movie::REGULAR
-        price += 2
-        if rental.days_rented > 2
-          price += (rental.days_rented - 2) * 1.5
-        end
-      when Movie::NEW_RELEASE
-        price += rental.days_rented * 3
-      when Movie::CHILDRENS
-        price += 1.5
-        if rental.days_rented > 3
-          price += (rental.days_rented - 3) * 1.5
-        end
-      else
-        # do nothing for a while
-    end
-
-    return price
-  end
 end
