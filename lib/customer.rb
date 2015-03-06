@@ -11,15 +11,31 @@ class Customer
   end
 
   def statement
-    result = "Rental record for #{@name}\n"
-    for rental in @rentals
+    result = statement_title + "\n"
 
-      result += "\t#{rental.movie.title}\t#{calculate_price(rental)}\n"
+    for rental in @rentals
+      result += "\t#{movie_title(rental)}\t#{calculate_price(rental)}\n"
     end
 
-    result += "Amount owed is $#{total_amount}\n"
-    result += "You earned #{frequent_renter_points} frequent renter points"
+    result += amount_owed_message + "\n"
+    result += frequent_renter_points_message 
     result
+  end
+
+  def statement_title
+    "Rental record for #{@name}"
+  end
+
+  def movie_title(rental)
+    rental.movie.title
+  end
+
+  def amount_owed_message
+    "Amount owed is $#{total_amount}"
+  end
+
+  def frequent_renter_points_message
+    "You earned #{frequent_renter_points} frequent renter points"
   end
 
   def frequent_renter_points
