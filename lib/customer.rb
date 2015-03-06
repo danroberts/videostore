@@ -10,6 +10,25 @@ class Customer
     @rentals << rental
   end
 
+  def html_statement
+    result = "<html><body>"
+    result += "<h1>#{statement_title}</h1>"
+    result += "<ul>"
+
+    for rental in @rentals
+      result += "<li>#{movie_title(rental)}&nbsp;&nbsp;&nbsp;&nbsp;#{calculate_price(rental)}</li>"
+    end
+
+    result += "</ul>"
+    result += "<p>#{amount_owed_message}<p>"
+    result += "<p>#{frequent_renter_points_message}</p>"
+    result += "</body></html>"
+
+    results
+  end
+
+
+
   def statement
     result = statement_title + "\n"
 
