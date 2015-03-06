@@ -4,9 +4,9 @@ require "customer"
 
 describe "a customer" do
   let(:customer) { Customer.new "Martin" }
-  let(:regular_movie) { Movie.new "Mad Max", Movie::REGULAR }
-  let(:new_movie)  { Movie.new("The Hobbit", Movie::NEW_RELEASE) }
-  let(:childrens_movie) { Movie.new("Bambi", Movie::CHILDRENS) }
+  let(:regular_movie) { Movie.new "Mad Max" }
+  let(:new_movie)  { NewReleaseMovie.new("The Hobbit") }
+  let(:childrens_movie) { ChildrensMovie.new("Bambi") }
 
   describe "without any rentals" do
     it "should have an empty statement" do
