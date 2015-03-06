@@ -10,37 +10,52 @@ class Customer
     @rentals << rental
   end
 
-  def html_statement
-    result = "<html><body>"
-    result += "<h1>#{statement_title}</h1>"
-    result += "<ul>"
-
-    for rental in @rentals
-      result += "<li>#{movie_title(rental)}&nbsp;&nbsp;&nbsp;&nbsp;#{rental.calculate_price}</li>"
+  def statement(params={})
+    if params[:html] == true
+      statement = HTMLStatement.new(@name, @rentals)
+    else
+      statement = Statement.new(@name, @rentals)
     end
+      
+    statement.generate_statement
+  end
+end
 
-    result += "</ul>"
-    result += "<p>#{amount_owed_message}<p>"
-    result += "<p>#{frequent_renter_points_message}</p>"
-    result += "</body></html>"
-
-    results
+class Statement
+  def initialize(customer_name, rentals)
+    @customer_name = customer_name
+    @rentals = rentals
   end
 
-  def statement
-    result = statement_title + "\n"
+  def generate_statement
+    result = generate_title +
+      generate_statement_rentals +
+      generate_amount_owed + 
+      frequent_renter_points_message
+  end
 
+  def generate_title
+    statement_title + "\n"
+  end
+
+  def generate_statement_line(rental)
+    "\t#{movie_title(rental)}\t#{rental.calculate_price}\n"
+  end
+
+  def generate_amount_owed
+    amount_owed_message + "\n"
+  end
+
+  def generate_statement_rentals
+    result = ''
     for rental in @rentals
-      result += "\t#{movie_title(rental)}\t#{rental.calculate_price}\n"
+      result += generate_statement_line(rental)
     end
-
-    result += amount_owed_message + "\n"
-    result += frequent_renter_points_message 
-    result
+    return result
   end
 
   def statement_title
-    "Rental record for #{@name}"
+    "Rental record for #{@customer_name}"
   end
 
   def movie_title(rental)
@@ -63,5 +78,33 @@ class Customer
     @rentals.reduce(0) { |price, rental| price += rental.calculate_price}
   end
 
-    
+end
+
+class HTMLStatement < Statement
+  def generate_title
+    "<html><body><h1>#{statement_title}</h1>"
+  end
+
+  def generate_statement_line(rental)
+    "<li>#{movie_title(rental)}&nbsp;&nbsp;&nbsp;&nbsp;#{rental.calculate_price}</li>"
+
+  end
+
+  def frequent_renter_points_message
+    "<p>You earned #{frequent_renter_points} frequent renter points</p>"
+  end
+
+  def generate_amount_owed
+    "<p>#{amount_owed_message}</p>"
+  end
+
+  def generate_statement_rentals
+    return '' unless @rentals.length > 0
+    result = '<ul>'
+    for rental in @rentals
+      result += generate_statement_line(rental)
+    end
+    result += '</ul>'
+    return result
+  end
 end

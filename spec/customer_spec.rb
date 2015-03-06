@@ -9,8 +9,16 @@ describe "a customer" do
   let(:childrens_movie) { ChildrensMovie.new("Bambi") }
 
   describe "without any rentals" do
-    it "should have an empty statement" do
-      customer.statement.should == "Rental record for Martin\nAmount owed is $0\nYou earned 0 frequent renter points"
+    describe "with a paper statement" do
+      it "should have an empty statement" do
+        customer.statement.should == "Rental record for Martin\nAmount owed is $0\nYou earned 0 frequent renter points"
+      end
+    end
+
+    describe "with an html statement" do
+      it "should have an empty statement" do
+        customer.statement(html: true).should == "<html><body><h1>Rental record for Martin</h1><p>Amount owed is $0</p><p>You earned 0 frequent renter points</p>"
+      end
     end
   end
 
